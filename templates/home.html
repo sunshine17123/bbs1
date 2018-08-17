@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/login.css">
+{% endblock css %}
+
+
+{% block login_reg %}
+
+    <div class="blog-masthead">
+        <div class="container">
+            <nav class="blog-nav">
+                <a class="blog-nav-item active" href="/index/">博客园</a>
+                <a class="blog-nav-item" href="#">首页</a>
+                <a class="blog-nav-item" href="#">新随笔</a>
+                <a class="blog-nav-item" href="#">联系</a>
+                <a class="blog-nav-item" href="#">管理</a>
+                <a class="blog-nav-item" href="#">订阅</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container" style="box-shadow:-1px 0px 13px #736C64;">
+        <div class="row">
+
+            <div class="col-sm-8 blog-main" style="margin-left: 8px;">
+                <!--首页内容列表   开始-->
+                {% for data_obj in article_list %}
+                    <div class="media">
+                        <a href="/blog/{{ data_obj.user }}/p/{{ data_obj.id }}">
+                            <h2 class="media-heading">{{ data_obj.title }}</h2>
+                        </a>
+
+                        <div class="media-left">
+                            <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                 src="/static/plugins/avatar/佩奇.jpeg"
+                                 data-holder-rendered="true" style="width: 64px; height: 64px;">
+                        </div>
+
+                        <div class="media-body">
+                            {{ data_obj.desc }}
+                            <p>
+                                <a href="/blog/{{ data_obj.user }}"><span>{{ data_obj.user }}</span></a>
+                                <span>发布于 &nbsp{{ data_obj.create_time }}</span>
+                                <span class="glyphicon glyphicon-comment">评论({{ data_obj.comment_set.count }})</span>
+                                <span class="glyphicon glyphicon-eye-open">点赞({{ data_obj.articleupdown_set.count }})</span>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+                <!--首页内容列表   结束-->
+
+                <!--bootstrap分页   开始-->
+                <nav aria-label="Page navigation" class="page">
+                    <ul class="pagination">
+                        {{ page_html|safe }}
+                    </ul>
+                </nav>
+                <!--bootstrap分页   结束-->
+
+                <nav>
+                    <ul class="pager">
+                        <li><a href="#">上一页</a></li>
+                        <li><a href="#">下一页</a></li>
+                    </ul>
+                </nav>
+
+            </div><!-- /.blog-main -->
+
+            <!--左侧侧边栏 开始-->
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar" style="margin-left: 50px;">
+                <div class="sidebar-module sidebar-module-inset">
+                    <a href="https://www.luffycity.com/home/camp?source=weiwei">
+                        <img src="/static/img/o_14camp.png" alt="" style="width: 210px;height: 200px;">
+                    </a>
+                </div>
+                {% load mytags %}
+                {% left_menu username %}
+            </div><!-- /.blog-sidebar -->
+            <!--左侧侧边栏 结束-->
+
+
+
+        </div><!-- /.row -->
+
+    </div><!-- /.container -->
+{% endblock %}
+
+
+
+
+
+
+
+
+

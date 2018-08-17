@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+
+{% block login_reg %}
+    {% include 'nav.html' %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 padding-top">
+                <h2>用户登陆</h2>
+                <hr>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                {% csrf_token %}
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">登陆</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <label for="{{ login_obj.name.id_for_label }}">{{ login_obj.name.label }}</label>
+                            {{ login_obj.name }}
+                        </div>
+                        <div>
+                            <label for="{{ login_obj.pwd.id_for_label }}">{{ login_obj.pwd.label }}</label>
+                            {{ login_obj.pwd }}
+                        </div>
+                        <div id="check">
+                            <label for="v-code" style="display: block;">验证码</label>
+                            <input id="v-code" type="text" style="width: 250px; display: inline-block"
+                                   class="form-control">
+                            <img src="/v-code/" alt="loading..." style="float: right;" id="v-code-img">
+                        </div>
+                        <div style="padding-top: 10px;">
+                            <button id="btn" type="button" class="btn btn-info btn-lg">登陆</button>
+                            <span id="error_msg" style="color:red;"></span>
+                            <div id="popup-captcha"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href=""></a>
+
+    <script src="/static/js/jQuery.js"></script>
+
+    <!--普通验证码的ajax-->
+    <script>
+        /*    $('#btn').click(function () {
+                let username = $('#id_name').val();
+                let pwd = $('#id_pwd').val();
+                let csrfToken = $("[name='csrfmiddlewaretoken']").val();
+                let vCode = $('#v-code').val();
+                $.ajax({
+                    url: '/login/',
+                    type: 'post',
+                    data: {
+                        username: username,
+                        password: pwd,
+                        csrfmiddlewaretoken: csrfToken,
+                        v_code: vCode,
+                    },
+                    success: function (res) {
+                        if (res.code !== 0) {
+                            $('#error_msg').text(res.err_msg);
+                        } else {
+                            location.href = '/index/'
+                        }
+                    }
+                })
+
+            });
+
+            // 找到图片的src属性在后面拼接 '?' ，当src发生变化后自动服务端获取数据，且不刷新页面，不是因为ajax
+            $('#v-code-img').click(function () {
+                this.src += '?'
+            });
+
+            //获取焦点知乎将err_msg清空，
+            $('input').focus(function () {
+                $('#error_msg').text('')
+            })
+
+        */
+    </script>
+
+
+    <script src="http://static.geetest.com/static/tools/gt.js"></script>
+
+    <script>
+        var handlerPopup = function (captchaObj) {
+            // 成功的回调
+            captchaObj.onSuccess(function () {
+                var validate = captchaObj.getValidate();
+                $.ajax({
+                    url: "/slide-login/", // 进行二次验证
+                    type: "post",
+                    data: {
+                        username: $('#id_name').val(),
+                        password: $('#id_pwd').val(),
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                        v_code: $('#v-code').val(),
+
+                        geetest_challenge: validate.geetest_challenge,
+                        geetest_validate: validate.geetest_validate,
+                        geetest_seccode: validate.geetest_seccode
+
+
+                    },
+                    success: function (res) {
+                        if (res.code !== 0) {
+                            $('#error_msg').text(res.err_msg);
+                        } else {
+                            location.href = '/index/'
+                        }
+                    }
+                });
+            });
+            //点击按钮弹出滑动验证
+            $("#btn").click(function () {
+                captchaObj.show();
+            });
+            // 将验证码加到id为captcha的元素里
+            captchaObj.appendTo("#popup-captcha");
+            // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+        };
+        // 验证开始需要向网站主后台获取id，challenge，success（是否启用failback）
+        $.ajax({
+            url: "/pcgetcaptcha/register?t=" + (new Date()).getTime(), // 加随机数防止缓存
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                // 使用initGeetest接口
+                // 参数1：配置参数
+                // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    product: "popup", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                    offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                    // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+                }, handlerPopup);
+            }
+        });
+    </script>
+
+    <script>
+        // 找到图片的src属性在后面拼接 '?' ，当src发生变化后自动服务端获取数据，且不刷新页面，不是因为ajax
+        $('#v-code-img').click(function () {
+            this.src += '?'
+        });
+
+        //获取焦点知乎将err_msg清空，
+        $('input').focus(function () {
+            $('#error_msg').text('')
+        })
+    </script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block login_reg %}
+    {#{{ register_obj.as_p }}#}
+    {% include 'nav.html' %}
+    <div class="container" style="padding-top: 40px;">
+        <div class="row">
+
+            <div class="col-md-7 col-md-offset-0">
+                <span>
+                    <h3 style="color: #e4b9b9">欢迎注册</h3>
+                </span>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form action="" method="post" novalidate autocomplete="off">
+                            {% csrf_token %}
+                            <div>
+                                <label for="{{ register_obj.name.id_for_label }}">{{ register_obj.name.label }}</label>
+                                {{ register_obj.name }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="{{ register_obj.email.id_for_label }}">{{ register_obj.email.label }}</label>
+                                {{ register_obj.email }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="{{ register_obj.phone.id_for_label }}">{{ register_obj.phone.label }}</label>
+                                {{ register_obj.phone }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="{{ register_obj.nickname.id_for_label }}">{{ register_obj.nickname.label }}</label>
+                                {{ register_obj.nickname }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="{{ register_obj.pwd.id_for_label }}">{{ register_obj.pwd.label }}</label>
+                                {{ register_obj.pwd }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="{{ register_obj.re_pwd.id_for_label }}">{{ register_obj.re_pwd.label }}</label>
+                                {{ register_obj.re_pwd }}
+                                <span class="help-block"></span>
+                            </div>
+                            <div>
+                                <label for="avatar-img">头像
+                                    <img src="/static/plugins/avatar/default.png" alt="默认头像"
+                                         style="padding: 10px 10px;">
+                                </label>
+                                <input id="avatar-img" accept="image/*" type="file" style="display: none;">
+                            </div>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-top: 10px;">提交</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+
+{% endblock %}

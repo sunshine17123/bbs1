@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block login_reg %}
+    {% include 'nav.html' %}
+    <div class="container-fluid padding-top">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">title</h3>
+                    </div>
+                    <div class="panel-body">
+                        <span>广告位招商</span>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">久等了，凯旋门</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img src="/static/img/xxx.jpg" alt="" style="width: 160px;height: 285px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                {% for data_obj in data_list %}
+                    <div class="media">
+                        <a href="/blog/{{ data_obj.user }}/?title={{ data_obj.title }}">
+                            <h4 class="media-heading">{{ data_obj.title }}</h4>
+                        </a>
+
+                        <div class="media-left">
+                            <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                 src="/static/plugins/avatar/佩奇.jpeg"
+                                 data-holder-rendered="true" style="width: 64px; height: 64px;">
+                        </div>
+
+                        <div class="media-body">
+                            {{ data_obj.desc }}
+                            <p>
+                                <a href="/blog/{{ data_obj.user }}"><span>{{ data_obj.user }}</span></a>
+                                <span>发布于 &nbsp{{ data_obj.create_time }}</span>
+                                <span class="glyphicon glyphicon-comment">评论({{ data_obj.comment_set.count }})</span>
+                                <span class="glyphicon glyphicon-eye-open">点赞({{ data_obj.articleupdown_set.count }})</span>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+
+                <nav aria-label="Page navigation" style="position: absolute;right: 40px;bottom: -170px">
+                    <ul class="pagination">
+                        {{ page_html|safe }}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Panel title</h3>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

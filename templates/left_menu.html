@@ -1,0 +1,51 @@
+<div class="sidebar-module">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">标签</h3>
+        </div>
+        <div class="panel-body">
+            <ol class="list-unstyled">
+                {% for tag in tag_list %}
+                    <li>
+                        <a href="/blog/{{ user_obj.username }}/tag/{{ tag.title }}">{{ tag.title }}({{ tag.article_set.count }})</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+
+</div>
+<div class="sidebar-module">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">分类</h3>
+        </div>
+        <div class="panel-body">
+            <ol class="list-unstyled">
+                {% for category in category_list %}
+                    <li>
+                        <a href="/blog/{{ user_obj.username }}/category/{{ category.title }}">{{ category.title }}({{ category.article_set.count }})</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="sidebar-module">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">时间归档</h3>
+        </div>
+        <div class="panel-body">
+            <ol class="list-unstyled">
+                {% for archive in archive_list %}
+                    <li>
+                        <a href="/blog/{{ user_obj.username }}/archive/{{ archive.create_y_m }}">{{ archive.create_y_m }}({{ archive.c }})</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>

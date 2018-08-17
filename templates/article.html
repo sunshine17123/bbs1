@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block login_reg %}
+    {% csrf_token %}
+    <div class="blog-masthead">
+        <div class="container">
+            <nav class="blog-nav">
+                <a class="blog-nav-item active" href="/index/">博客园</a>
+                <a class="blog-nav-item" href="#">首页</a>
+                <a class="blog-nav-item" href="#">新随笔</a>
+                <a class="blog-nav-item" href="#">联系</a>
+                <a class="blog-nav-item" href="#">管理</a>
+                <a class="blog-nav-item" href="#">订阅</a>
+                <a href="/logout/" class="blog-nav-item">注销</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container" style="box-shadow:-1px 0px 13px #736C64;">
+        <div class="blog-header">
+            <h1 class="blog-title">{{ article_obj.title }}</h1>
+            <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-8 blog-main" style="margin-left: 8px;">
+                <span style="padding-left: 30px">
+                    {{ article_obj.articledetail.content }}
+                </span>
+
+                <nav>
+                    <ul class="pager">
+                        <li><a href="#">上一页</a></li>
+                        <li><a href="#">下一页</a></li>
+                    </ul>
+                </nav>
+
+            </div><!-- /.blog-main -->
+
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar" style="margin-left: 50px;">
+                <div class="sidebar-module sidebar-module-inset">
+                    <a href="https://www.luffycity.com/home/camp?source=weiwei">
+                        <img src="/static/img/o_14camp.png" alt="" style="width: 210px;height: 200px;">
+                    </a>
+                </div>
+
+                {% load mytags %}
+                {% left_menu username %}
+
+            </div><!-- /.blog-sidebar -->
+
+            <!--推荐按钮  开始-->
+            <div id="div_digg" class="up-down">
+                <div class="diggit digg">
+                    <span class="diggnum" id="digg_count">{{ article_obj.up_count }}</span>
+                </div>
+                <div class="buryit digg">
+                    <span class="burynum" id="bury_count">{{ article_obj.down_count }}</span>
+                </div>
+                <div class="clear"></div>
+                <div class="diggword" id="digg_tips">
+                </div>
+            </div>
+            <!--推荐按钮  结束-->
+
+        </div><!-- /.row -->
+
+    </div><!-- /.container -->
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.digg').click(function () {
+            if (!'{{ request.user.username }}') {
+                //    request.user.id   为 none
+                //    request.user.username  为空
+
+                {#console.log(typeof '{{ request.user.username }}','kkkk','{{ request.user.username }}');#}
+                {#console.log(typeof '{{ request.user.id }}','kkkk','{{ request.user.id }}');#}
+                location.href = '/login/?next={{ request.get_full_path }}'
+            }
+            var is_up = $(this).hasClass('diggit');
+            var user_id = '{{ request.user.id }}';
+            var article_id = '{{ article_obj.id }}';
+            $.ajax({
+                url: '/updown/',
+                type: 'post',
+                data: {
+                    user_id: user_id,
+                    article_id: article_id,
+                    is_up: is_up,
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                },
+                success: function (res) {
+                    if (res['code'] !== 0) {
+                        $('#digg_tips').text(res['msg']);
+                    } else{
+                        if (is_up) {
+                            var $up = $('#digg_count');
+                            var a = document.getElementById('digg_count');
+
+                            $('#digg_count').text(+$('#digg_count') + 1);
+                        } else {
+                            var $down = $('#bury_count');
+                            $('#bury_count').text(+$('#bury_count') + 1)
+                        }
+                     }
+
+
+
+                    console.log($up)
+                    console.log(+$('#digg_count').text()+1)
+                    console.log(+$('#bury_count').text())
+
+                    console.log(+'{{ article_obj.up_count }}'+1)
+                    console.log($('#qwe').text())
+                    console.log($down)
+
+                }
+            })
+        })
+    </script>
+
+{% endblock js %}
+
+
+
